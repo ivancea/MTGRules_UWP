@@ -1,0 +1,70 @@
+﻿<Page
+    x:Class="MTGRules.Pages.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MTGRules.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <RichTextBlock Grid.Row="0"
+                   TextAlignment="Center"
+                   VerticalAlignment="Center">
+            <Paragraph FontSize="50">
+                MTG Rules
+            </Paragraph>
+            <Paragraph>
+                <Run x:Uid="/About/version">
+                    Version
+                </Run>:
+                <Run x:Name="versionRun" />
+            </Paragraph>
+            <Paragraph />
+            <Paragraph FontSize="25">
+                <Run x:Uid="/About/madeByIvancea">
+                    Made by ivancea
+                </Run>
+            </Paragraph>
+            <Paragraph />
+            <Paragraph />
+            <Paragraph FontSize="20">
+                <Run x:Uid="/About/appInfo">
+                    This App is supposed to be a fast and functional source of Magic rules
+                </Run>
+                <LineBreak />
+                <LineBreak />
+                <Run x:Uid="/About/notOfficialApp">
+                    This is NOT an official App and it is not affiliated with
+                </Run>
+                <LineBreak />
+                <Hyperlink NavigateUri="https://magic.wizards.com" FontWeight="Bold">
+                    Wizards of the Coast
+                </Hyperlink>
+                <LineBreak />
+                <LineBreak />
+                <Run x:Uid="/About/requestOrFeature">
+                    Any request or feature?
+                </Run>
+                <LineBreak />
+                <Hyperlink NavigateUri="mailto://ivancea96@outlook.com">
+                    ivancea96@outlook.com
+                </Hyperlink>
+                <LineBreak />
+                <Hyperlink NavigateUri="https://twitter.com/ivancea96">
+                    Twitter: ivancea96
+                </Hyperlink>
+            </Paragraph>
+        </RichTextBlock>
+        <Button x:Name="backButton"
+                x:Uid="/About/backButton"
+                Grid.Row="3"
+                Click="onBackButtonClick"
+                HorizontalAlignment="Center"/>
+
+    </Grid>
+</Page>

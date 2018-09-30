@@ -1,0 +1,110 @@
+﻿<Page
+    x:Class="MTGRules.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MTGRules"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
+    Loaded="onLoaded">
+    <Grid>
+
+        <ProgressRing x:Name="progressRing"
+                      Width="60"
+                      Height="60"
+                      IsActive="False"/>
+        <Grid x:Name="contentGrid"
+              Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Uid="searchButton"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Click="onSearchButtonClick"/>
+            <TextBox x:Name="searchTextBox"
+                     x:Uid="searchTextBox"
+                     Grid.Row="0"
+                     Grid.Column="1"
+                     KeyDown="onTextBoxKeyDown"/>
+
+            <ListView x:Name="list"
+                      Grid.Row="1"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      SelectionMode="Single"
+                      ShowsScrollingPlaceholders="True"
+                      IsItemClickEnabled="True"
+                      ItemClick="onListItemClick">
+
+                <!--<ListView.Resources>
+                    <MenuFlyout x:Key="itemFlyout">
+                        <MenuFlyoutItem Text="Copy to clipboard"
+                                        Click="onClipboardFlyoutItemClick"/>
+                        <MenuFlyoutItem Text="Read text"
+                                        Click="onReadTextFlyoutItemClick"/>
+                    </MenuFlyout>
+                </ListView.Resources> -->
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Padding" Value="10"/>
+                        <!--<Setter Property="ContextFlyout" Value="{StaticResource itemFlyout}"/>-->
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Holding="onListItemHolding"
+                              RightTapped="onListItemRightTapped">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="{Binding Title}"
+                                       TextWrapping="WrapWholeWords"
+                                       FontWeight="Bold"
+                                       Margin="5"
+                                       Grid.Column="0"/>
+
+                            <TextBlock local:TextBlockExtension.FormattedText="{Binding Text}"
+                                       TextWrapping="WrapWholeWords"
+                                       Margin="5"
+                                       Grid.Column="1"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <CommandBar Grid.Row="2"
+                        Grid.ColumnSpan="2">
+
+                <CommandBar.Content>
+                    <StackPanel Margin="10,2">
+                        <TextBlock x:Uid="usingRulesText" />
+                        <TextBlock x:Name="actualRulesTextBlock" />
+                    </StackPanel>
+                </CommandBar.Content>
+                <AppBarButton x:Name="homeButton" x:Uid="homeButton" Icon="Home" Click="onHomeButtonClick" />
+                <AppBarButton x:Uid="randomRuleButton" Icon="Shuffle" Click="onRandomRuleButtonClick"/>
+
+                <CommandBar.SecondaryCommands>
+                    <AppBarButton x:Name="donateButton" x:Uid="donateButton" Click="onDonateButtonClick" />
+                    <AppBarButton x:Name="changeThemeButton" x:Uid="changeThemeButton" Click="onChangeThemeButtonClick"/>
+                    <AppBarButton x:Name="clearCacheButton" x:Uid="clearCacheButton" Click="onClearCacheButtonClick" />
+                    <AppBarButton x:Uid="compareRulesButton" Click="onExperimentalButtonClick" />
+                    <AppBarButton x:Uid="changeRulesButton" Click="onChangeRulesButtonClick" />
+                    <AppBarButton x:Uid="aboutButton" Click="onAboutButtonClick" />
+                </CommandBar.SecondaryCommands>
+            </CommandBar>
+        </Grid>
+    </Grid>
+</Page>

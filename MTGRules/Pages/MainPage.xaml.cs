@@ -133,7 +133,32 @@ namespace MTGRules {
             new RulesSource("MagicCompRules%2020180810.txt",
                             new Uri("http://media.wizards.com/2018/downloads/MagicCompRules%2020180810.txt"),
                             new DateTime(2018, 8, 10),
-                            Encoding.GetEncoding("windows-1252"))
+                            Encoding.GetEncoding("windows-1252")),
+
+            new RulesSource("MagicCompRules%2020181005.txt",
+                            new Uri("http://media.wizards.com/2018/downloads/MagicCompRules%2020181005.txt"),
+                            new DateTime(2018, 10, 5),
+                            Encoding.GetEncoding("windows-1252")),
+
+            new RulesSource("MagicCompRules%2020190125.txt",
+                            new Uri("http://media.wizards.com/2019/downloads/MagicCompRules%2020190125.txt"),
+                            new DateTime(2019, 1, 25),
+                            Encoding.GetEncoding("windows-1252")),
+
+            new RulesSource("MagicCompRules%2020190712.txt",
+                            new Uri("https://media.wizards.com/2019/downloads/MagicCompRules%2020190712.txt"),
+                            new DateTime(2019, 7, 12),
+                            Encoding.GetEncoding("UTF-8")),
+
+            new RulesSource("MagicCompRules%2020190823.txt",
+                            new Uri("https://media.wizards.com/2019/downloads/MagicCompRules%2020190823.txt"),
+                            new DateTime(2019, 8, 23),
+                            Encoding.GetEncoding("UTF-8")),
+
+            new RulesSource("MagicCompRules%2020191004.txt",
+                            new Uri("https://media.wizards.com/2019/downloads/MagicCompRules%2020191004.txt"),
+                            new DateTime(2019, 10, 04),
+                            Encoding.GetEncoding("UTF-8"))
         };
 
         private List<Rule> rules;

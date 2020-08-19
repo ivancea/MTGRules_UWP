@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using MTGRules.Pages;
 using Microsoft.Services.Store.Engagement;
+using System.Text.RegularExpressions;
 
 namespace MTGRules {
 
@@ -158,18 +159,28 @@ namespace MTGRules {
             new RulesSource("MagicCompRules%2020191004.txt",
                             new Uri("https://media.wizards.com/2019/downloads/MagicCompRules%2020191004.txt"),
                             new DateTime(2019, 10, 04),
+                            Encoding.GetEncoding("UTF-8")),
+
+            new RulesSource("MagicCompRules%2020200122.txt",
+                            new Uri("https://media.wizards.com/2020/downloads/MagicCompRules%2020200122.txt"),
+                            new DateTime(2020, 01, 22),
+                            Encoding.GetEncoding("UTF-8")),
+
+            new RulesSource("MagicCompRules%2020200417.txt",
+                            new Uri("https://media.wizards.com/2020/downloads/MagicCompRules%2020200417.txt"),
+                            new DateTime(2020, 04, 17),
                             Encoding.GetEncoding("UTF-8"))
         };
 
         private List<Rule> rules;
 
-        private List<HistoryItem> history = new List<HistoryItem>();
-        HistoryItem actualSearch = new HistoryItem(HistoryType.Number, 0);
+        private readonly List<HistoryItem> history = new List<HistoryItem>();
+        private HistoryItem actualSearch = new HistoryItem(HistoryType.Number, 0);
 
-        bool useLightTheme;
-        int actualRules;
+        private bool useLightTheme;
+        private int actualRules;
 
-        MediaElement mediaplayer = new MediaElement();
+        private readonly MediaElement mediaplayer = new MediaElement();
 
         public MainPage() {
             InitializeComponent();
@@ -184,52 +195,52 @@ namespace MTGRules {
             ActualInstance = this;
         }
 
-        private async void onLoaded(object sender, RoutedEventArgs args) {
+        private async void OnLoaded(object sender, RoutedEventArgs args) {
             ProgressRingViewer.page = this;
             if(rules == null) {
                 using (ProgressRingViewer.Show()) {
-                    if (!await loadDataAsync(rulesSources.Count - 1)) {
+                    if (!await LoadDataAsync(rulesSources.Count - 1)) {
                         MessageDialog dialog =
                             new MessageDialog(ResourceLoader.GetForCurrentView().GetString("errorLoadingLastRules"));
                         await dialog.ShowAsync();
                     } else {
-                        showByNumber(0, false);
+                        ShowByNumber(0, false);
                         homeButton.IsEnabled = false;
 
                         SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
                             AppViewBackButtonVisibility.Collapsed;
-                        SystemNavigationManager.GetForCurrentView().BackRequested += onBackButtonRequested;
+                        SystemNavigationManager.GetForCurrentView().BackRequested += OnBackButtonRequested;
                     }
                 }
             }
         }
 
-        public void onHyperlinkRuleClick(string text) {
-            showByText(text);
+        public void OnHyperlinkRuleClick(string text) {
+            ShowByText(text);
         }
 
-        private void onListItemRightTapped(object sender, RightTappedRoutedEventArgs args) {
+        private void OnListItemRightTapped(object sender, RightTappedRoutedEventArgs args) {
             Rule text = (Rule)((Grid)sender).DataContext;
-            showMenuFlyout(text, (FrameworkElement)sender);
+            ShowMenuFlyout(text, (FrameworkElement)sender);
         }
 
-        private void onListItemHolding(object sender, HoldingRoutedEventArgs args) {
+        private void OnListItemHolding(object sender, HoldingRoutedEventArgs args) {
             Rule text = (Rule)((Grid)sender).DataContext;
-            showMenuFlyout(text, (FrameworkElement)sender);
+            ShowMenuFlyout(text, (FrameworkElement)sender);
         }
 
-        private void onRandomRuleButtonClick(object sender, RoutedEventArgs e) {
-            showRandomRule();
+        private void OnRandomRuleButtonClick(object sender, RoutedEventArgs e) {
+            ShowRandomRule();
         }
 
-        private async void onDonateButtonClick(object sender, RoutedEventArgs args){
+        private async void OnDonateButtonClick(object sender, RoutedEventArgs args){
             using (ProgressRingViewer.Show()) {
                 MessageDialog dialog = new MessageDialog("");
                 try {
                     ListingInformation info = await CurrentApp.LoadListingInformationAsync();
                     ProductListing donation;
                     if (info.ProductListings.TryGetValue("donation", out donation)) {
-                        if (await fulfillDonation()) {
+                        if (await FulfillDonation()) {
                             PurchaseResults purchaseResult =
                                 await CurrentApp.RequestProductPurchaseAsync(donation.ProductId);
                             if (purchaseResult.Status == ProductPurchaseStatus.Succeeded) {
@@ -263,7 +274,7 @@ namespace MTGRules {
             }
         }
 
-        private async Task<bool> fulfillDonation() {
+        private async Task<bool> FulfillDonation() {
             var unfulfilledConsumables = await CurrentApp.GetUnfulfilledConsumablesAsync();
             foreach( UnfulfilledConsumable consumable in unfulfilledConsumables) {
                 if(consumable.ProductId == "donation") {
@@ -280,7 +291,7 @@ namespace MTGRules {
             return true;
         }
 
-        private async void onChangeThemeButtonClick(object sender, RoutedEventArgs args) {
+        private async void OnChangeThemeButtonClick(object sender, RoutedEventArgs args) {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
             useLightTheme = !useLightTheme;
@@ -296,21 +307,21 @@ namespace MTGRules {
             await dialog.ShowAsync();
         }
 
-        private void onBackButtonRequested(object sender, BackRequestedEventArgs args) {
+        private void OnBackButtonRequested(object sender, BackRequestedEventArgs args) {
             if(history.Count >= 1) {
                 HistoryItem item = history.Last();
                 switch(item.Type) {
                     case HistoryType.Search:
-                        search((string)item.Value, false);
+                        Search((string)item.Value, false);
                         break;
                     case HistoryType.Number:
-                        showByNumber((int)item.Value, false);
+                        ShowByNumber((int)item.Value, false);
                         break;
                     case HistoryType.Text:
-                        showByText((string)item.Value, false);
+                        ShowByText((string)item.Value, false);
                         break;
                     case HistoryType.Random:
-                        showRandomRule((int?)item.Value, false);
+                        ShowRandomRule((int?)item.Value, false);
                         break;
                 }
 
@@ -326,31 +337,31 @@ namespace MTGRules {
             }
         }
 
-        private void onListItemClick(object sender, ItemClickEventArgs args) {
+        private void OnListItemClick(object sender, ItemClickEventArgs args) {
             Rule rule = (Rule)args.ClickedItem;
             if(rule.Title.Length > 0) {
                 if(rule.Title[0] >= '1' && rule.Title[0] <= '9') {
                     int n = rule.Title.IndexOf('.');
                     if(n >= 0 && rule.Title.Length-1 == n) {
                         if(int.TryParse(rule.Title.Substring(0, n), out n)) {
-                            showByNumber((short)n);
+                            ShowByNumber((short)n);
                         }
                     }
                 }else if(rule.Title == "Glosary") {
-                    showByNumber(10);
+                    ShowByNumber(10);
                 }
             }
         }
 
-        private void onTextBoxKeyDown(object sender, KeyRoutedEventArgs args) {
+        private void OnTextBoxKeyDown(object sender, KeyRoutedEventArgs args) {
             if(args.Key == VirtualKey.Enter &&
                args.KeyStatus.RepeatCount == 1) {
                 Focus(FocusState.Programmatic);
-                search(searchTextBox.Text);
+                Search(searchTextBox.Text);
             }
         }
 
-        private async void onClearCacheButtonClick(object sender, RoutedEventArgs args) {
+        private async void OnClearCacheButtonClick(object sender, RoutedEventArgs args) {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
             foreach(RulesSource source in rulesSources) {
                 try {
@@ -365,13 +376,13 @@ namespace MTGRules {
             clearCacheButton.IsEnabled = false;
         }
 
-        private async void onChangeRulesButtonClick(object sender, RoutedEventArgs args) {
+        private async void OnChangeRulesButtonClick(object sender, RoutedEventArgs args) {
             using (ProgressRingViewer.Show()) {
-                int n = await showRulesListPicker(ResourceLoader.GetForCurrentView().GetString("selectTheRules"));
+                int n = await ShowRulesListPicker(ResourceLoader.GetForCurrentView().GetString("selectTheRules"));
 
                 if (n >= 0 && n < rulesSources.Count) {
-                    if (await loadDataAsync(n)) {
-                        showByNumber(0, false);
+                    if (await LoadDataAsync(n)) {
+                        ShowByNumber(0, false);
                         history.Clear();
                     } else {
                         MessageDialog dialog =
@@ -382,17 +393,17 @@ namespace MTGRules {
             }
         }
 
-        private void onAboutButtonClick(object sender, RoutedEventArgs args) {
+        private void OnAboutButtonClick(object sender, RoutedEventArgs args) {
             Frame.Navigate(typeof(AboutPage));
         }
         
-        private async void onExperimentalButtonClick(object sender, RoutedEventArgs args) {
+        private async void OnExperimentalButtonClick(object sender, RoutedEventArgs args) {
             using (ProgressRingViewer.Show()) {
-                int n1 = await showRulesListPicker(ResourceLoader.GetForCurrentView().GetString("selectOldRules"));
+                int n1 = await ShowRulesListPicker(ResourceLoader.GetForCurrentView().GetString("selectOldRules"));
                 if (n1 < 0 || n1 >= rulesSources.Count)
                     return;
 
-                int n2 = await showRulesListPicker(ResourceLoader.GetForCurrentView().GetString("selectNewRules"));
+                int n2 = await ShowRulesListPicker(ResourceLoader.GetForCurrentView().GetString("selectNewRules"));
                 if (n2 < 0 || n2 >= rulesSources.Count)
                     return;
 
@@ -411,15 +422,15 @@ namespace MTGRules {
                 Rule rule;
 
                 foreach (Rule r1 in from) {
-                    rule = compare(r1, findRule(to, r1.Title));
+                    rule = Compare(r1, FindRule(to, r1.Title));
                     if (rule != null)
                         li.Add(rule);
                     foreach (Rule r2 in r1.SubRules) {
-                        rule = compare(r2, findRule(to, r2.Title));
+                        rule = Compare(r2, FindRule(to, r2.Title));
                         if (rule != null)
                             li.Add(rule);
                         foreach (Rule r3 in r2.SubRules) {
-                            rule = compare(r3, findRule(to, r3.Title));
+                            rule = Compare(r3, FindRule(to, r3.Title));
                             if (rule != null)
                                 li.Add(rule);
                         }
@@ -427,15 +438,15 @@ namespace MTGRules {
                 }
 
                 foreach (Rule r1 in to) {
-                    rule = findRule(from, r1.Title);
+                    rule = FindRule(from, r1.Title);
                     if (rule == null)
                         li.Add(new Rule("(+) " + r1.Title, r1.Text));
                     foreach (Rule r2 in r1.SubRules) {
-                        rule = findRule(from, r2.Title);
+                        rule = FindRule(from, r2.Title);
                         if (rule == null)
                             li.Add(new Rule("(+) " + r2.Title, r2.Text));
                         foreach (Rule r3 in r2.SubRules) {
-                            rule = findRule(from, r3.Title);
+                            rule = FindRule(from, r3.Title);
                             if (rule == null)
                                 li.Add(new Rule("(+) " + r3.Title, r3.Text));
                         }
@@ -448,7 +459,7 @@ namespace MTGRules {
             }
         }
 
-        private async Task<int> showRulesListPicker(string title)
+        private async Task<int> ShowRulesListPicker(string title)
         {
             List<string> li = new List<string>();
 
@@ -467,21 +478,26 @@ namespace MTGRules {
                     : -1;
         }
 
-        private static Rule compare(Rule from, Rule to) {
+        private static Rule Compare(Rule from, Rule to) {
             if(to == null)
                 return new Rule("(-) " + from.Title, from.Text);
             if(from == null)
                 return new Rule("(+) " + to.Title, to.Text);
             if(from.Title != to.Title)
                 return null;
-            if(from.Text != to.Text)
+            if(SanitizeRule(from.Text) != SanitizeRule(to.Text))
                 return new Rule("(M) " + from.Title, from.Text + "\n\n " +
                                                      ResourceLoader.GetForCurrentView().GetString("compareChangedTo") +
                                                      " \n\n" + to.Text);
             return null;
         }
 
-        private static Rule findRule(List<Rule> rules, string title) {
+        private static string SanitizeRule(string rule)
+        {
+            return Regex.Replace(rule, "[^\\w]+", "");
+        }
+
+        private static Rule FindRule(List<Rule> rules, string title) {
             foreach(Rule r1 in rules) {
                 if(r1.Title == title)
                     return r1;
@@ -497,16 +513,16 @@ namespace MTGRules {
             return null;
         }
 
-        private void onHomeButtonClick(object sender, RoutedEventArgs args) {
-            showByNumber();
+        private void OnHomeButtonClick(object sender, RoutedEventArgs args) {
+            ShowByNumber();
         }
 
-        private void onSearchButtonClick(object sender, RoutedEventArgs args) {
+        private void OnSearchButtonClick(object sender, RoutedEventArgs args) {
             Focus(FocusState.Programmatic);
-            search(searchTextBox.Text);
+            Search(searchTextBox.Text);
         }
 
-        private async void speechText(string text) {
+        private async void SpeechText(string text) {
             using(var speech = new SpeechSynthesizer()) {
                 speech.Voice = (SpeechSynthesizer.DefaultVoice.Language.StartsWith("en") ?
                                 SpeechSynthesizer.DefaultVoice
@@ -522,24 +538,24 @@ namespace MTGRules {
             CustomEventlogger.Log("TextToSpeech");
         }
 
-        private void onClipboardFlyoutItemClick(object sender, RoutedEventArgs args) {
+        private void OnClipboardFlyoutItemClick(object sender, RoutedEventArgs args) {
             TextBlock textBlock = (TextBlock)((MenuFlyout)((MenuFlyoutItem)sender).Parent).Target;
             DataPackage dp = new DataPackage();
             dp.SetText(textBlock.Text);
             Clipboard.SetContent(dp);
         }
 
-        private void onReadTextFlyoutItemClick(object sender, RoutedEventArgs args) {
+        private void OnReadTextFlyoutItemClick(object sender, RoutedEventArgs args) {
             TextBlock textBlock = (TextBlock)((MenuFlyout)((MenuFlyoutItem)sender).Parent).Target;
             string text = textBlock.Text;
             if(text.Length > 0) {
                 if(text[0] >= '1' && text[0] <= '9')
                     text = text.Substring(text.IndexOf(' ') + 1);
-                speechText(text);
+                SpeechText(text);
             }
         }
 
-        private void showMenuFlyout(Rule text, FrameworkElement elem = null) {
+        private void ShowMenuFlyout(Rule text, FrameworkElement elem = null) {
             MenuFlyout menu = new MenuFlyout();
             MenuFlyoutItem item = new MenuFlyoutItem {
                 Text = ResourceLoader.GetForCurrentView().GetString("copyToClipboard")
@@ -559,14 +575,14 @@ namespace MTGRules {
                 if(txt.Length > 0) {
                     if(txt[0] >= '1' && txt[0] <= '9')
                         txt = txt.Substring(txt.IndexOf(' ') + 1);
-                    speechText(txt);
+                    SpeechText(txt);
                 }
             };
             menu.Items.Add(item);
             menu.ShowAt(elem ?? this);
         }
 
-        private void showRandomRule(int? seed = null, bool addToHistory = true) {
+        private void ShowRandomRule(int? seed = null, bool addToHistory = true) {
             if(rules == null)
                 return;
             if(seed == null)
@@ -595,11 +611,11 @@ namespace MTGRules {
             homeButton.IsEnabled = true;
         }
 
-        private void showByText(string text, bool addToHistory = true) {
+        private void ShowByText(string text, bool addToHistory = true) {
             int pos = text.IndexOf('.');
 
             if(pos == -1) {
-                showByNumber(int.Parse(text));
+                ShowByNumber(int.Parse(text));
             } else {
                 List<Rule> source = new List<Rule>();
                 Rule mustSee = null;
@@ -640,7 +656,7 @@ namespace MTGRules {
             }
         }
 
-        private void showByNumber(int number = 0, bool addToHistory = true) {
+        private void ShowByNumber(int number = 0, bool addToHistory = true) {
             if(rules == null)
                 return;
             List<Rule> source = new List<Rule>();
@@ -691,7 +707,7 @@ namespace MTGRules {
             }
         }
 
-        private async void search(string text, bool addToHistory = true) {
+        private async void Search(string text, bool addToHistory = true) {
             if(rules == null)
                 return;
             if(text.Length < 3) {
@@ -739,7 +755,7 @@ namespace MTGRules {
             }
         }
 
-        private async Task<bool> loadDataAsync(int rulesIndex) {
+        private async Task<bool> LoadDataAsync(int rulesIndex) {
             RulesSource source = rulesSources[rulesIndex];
             List<Rule> tempRules = await Rule.getRules(source);
             if(tempRules == null) {

@@ -58,6 +58,14 @@
                 <Hyperlink NavigateUri="https://twitter.com/ivancea96">
                     Twitter: ivancea96
                 </Hyperlink>
+                <LineBreak />
+                <LineBreak />
+                <Run x:Uid="/About/android">
+                    New version available on
+                </Run>
+                <Hyperlink NavigateUri="https://play.google.com/store/apps/details?id=com.ivancea.MTGRules">
+                    Android
+                </Hyperlink>
             </Paragraph>
         </RichTextBlock>
         <Button x:Name="backButton"

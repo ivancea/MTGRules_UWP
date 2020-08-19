@@ -48,7 +48,7 @@ namespace MTGRules {
         private static void Rule_Click(Hyperlink sender, HyperlinkClickEventArgs args) {
             if (MainPage.ActualInstance != null)
             {
-                MainPage.ActualInstance.onHyperlinkRuleClick(((Run)sender.Inlines.First()).Text);
+                MainPage.ActualInstance.OnHyperlinkRuleClick(((Run)sender.Inlines.First()).Text);
             }
         }
     }

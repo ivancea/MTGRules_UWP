@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     NavigationCacheMode="Enabled"
-    Loaded="onLoaded">
+    Loaded="OnLoaded">
     <Grid>
 
         <ProgressRing x:Name="progressRing"
@@ -29,12 +29,12 @@
             <Button x:Uid="searchButton"
                     Grid.Row="0"
                     Grid.Column="0"
-                    Click="onSearchButtonClick"/>
+                    Click="OnSearchButtonClick"/>
             <TextBox x:Name="searchTextBox"
                      x:Uid="searchTextBox"
                      Grid.Row="0"
                      Grid.Column="1"
-                     KeyDown="onTextBoxKeyDown"/>
+                     KeyDown="OnTextBoxKeyDown"/>
 
             <ListView x:Name="list"
                       Grid.Row="1"
@@ -43,14 +43,14 @@
                       SelectionMode="Single"
                       ShowsScrollingPlaceholders="True"
                       IsItemClickEnabled="True"
-                      ItemClick="onListItemClick">
+                      ItemClick="OnListItemClick">
 
                 <!--<ListView.Resources>
                     <MenuFlyout x:Key="itemFlyout">
                         <MenuFlyoutItem Text="Copy to clipboard"
-                                        Click="onClipboardFlyoutItemClick"/>
+                                        Click="OnClipboardFlyoutItemClick"/>
                         <MenuFlyoutItem Text="Read text"
-                                        Click="onReadTextFlyoutItemClick"/>
+                                        Click="OnReadTextFlyoutItemClick"/>
                     </MenuFlyout>
                 </ListView.Resources> -->
 
@@ -63,8 +63,8 @@
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Holding="onListItemHolding"
-                              RightTapped="onListItemRightTapped">
+                        <Grid Holding="OnListItemHolding"
+                              RightTapped="OnListItemRightTapped">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*" />
@@ -93,16 +93,16 @@
                         <TextBlock x:Name="actualRulesTextBlock" />
                     </StackPanel>
                 </CommandBar.Content>
-                <AppBarButton x:Name="homeButton" x:Uid="homeButton" Icon="Home" Click="onHomeButtonClick" />
-                <AppBarButton x:Uid="randomRuleButton" Icon="Shuffle" Click="onRandomRuleButtonClick"/>
+                <AppBarButton x:Name="homeButton" x:Uid="homeButton" Icon="Home" Click="OnHomeButtonClick" />
+                <AppBarButton x:Uid="randomRuleButton" Icon="Shuffle" Click="OnRandomRuleButtonClick"/>
 
                 <CommandBar.SecondaryCommands>
-                    <AppBarButton x:Name="donateButton" x:Uid="donateButton" Click="onDonateButtonClick" />
-                    <AppBarButton x:Name="changeThemeButton" x:Uid="changeThemeButton" Click="onChangeThemeButtonClick"/>
-                    <AppBarButton x:Name="clearCacheButton" x:Uid="clearCacheButton" Click="onClearCacheButtonClick" />
-                    <AppBarButton x:Uid="compareRulesButton" Click="onExperimentalButtonClick" />
-                    <AppBarButton x:Uid="changeRulesButton" Click="onChangeRulesButtonClick" />
-                    <AppBarButton x:Uid="aboutButton" Click="onAboutButtonClick" />
+                    <AppBarButton x:Name="donateButton" x:Uid="donateButton" Click="OnDonateButtonClick" />
+                    <AppBarButton x:Name="changeThemeButton" x:Uid="changeThemeButton" Click="OnChangeThemeButtonClick"/>
+                    <AppBarButton x:Name="clearCacheButton" x:Uid="clearCacheButton" Click="OnClearCacheButtonClick" />
+                    <AppBarButton x:Uid="compareRulesButton" Click="OnExperimentalButtonClick" />
+                    <AppBarButton x:Uid="changeRulesButton" Click="OnChangeRulesButtonClick" />
+                    <AppBarButton x:Uid="aboutButton" Click="OnAboutButtonClick" />
                 </CommandBar.SecondaryCommands>
             </CommandBar>
         </Grid>

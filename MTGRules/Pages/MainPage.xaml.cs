@@ -163,12 +163,17 @@ namespace MTGRules {
 
             new RulesSource("MagicCompRules%2020200122.txt",
                             new Uri("https://media.wizards.com/2020/downloads/MagicCompRules%2020200122.txt"),
-                            new DateTime(2020, 01, 22),
+                            new DateTime(2020, 1, 22),
                             Encoding.GetEncoding("UTF-8")),
 
             new RulesSource("MagicCompRules%2020200417.txt",
                             new Uri("https://media.wizards.com/2020/downloads/MagicCompRules%2020200417.txt"),
-                            new DateTime(2020, 04, 17),
+                            new DateTime(2020, 4, 17),
+                            Encoding.GetEncoding("UTF-8")),
+
+            new RulesSource("MagicCompRules%2020200703.txt",
+                            new Uri("https://media.wizards.com/2020/downloads/MagicCompRules%2020200703.txt"),
+                            new DateTime(2020, 7, 3),
                             Encoding.GetEncoding("UTF-8"))
         };
 

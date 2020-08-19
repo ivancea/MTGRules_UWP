@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="11718ivancea.MTGRules" Publisher="CN=917C9BCD-C740-449E-AC75-5DF2BA8D4F62" Version="2.16.61.0" />
+  <Identity Name="11718ivancea.MTGRules" Publisher="CN=917C9BCD-C740-449E-AC75-5DF2BA8D4F62" Version="2.16.64.0" />
   <mp:PhoneIdentity PhoneProductId="098da2aa-8c24-448f-91f6-0eddcbccfb81" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>MTG Rules</DisplayName>

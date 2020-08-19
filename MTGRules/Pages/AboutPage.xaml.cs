@@ -21,17 +21,17 @@ namespace MTGRules.Pages {
 
         public AboutPage() {
             this.InitializeComponent();
-            SystemNavigationManager.GetForCurrentView().BackRequested += onBackButtonRequested;
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackButtonRequested;
 
             Run versionRun = (Run)this.FindName("versionRun");
             versionRun.Text = GetAppVersion();
         }
 
-        private void onBackButtonRequested(object sender, BackRequestedEventArgs e) {
+        private void OnBackButtonRequested(object sender, BackRequestedEventArgs e) {
             e.Handled = true;
         }
 
-        private void onBackButtonClick(object sender, RoutedEventArgs e) {
+        private void OnBackButtonClick(object sender, RoutedEventArgs e) {
             this.Frame.GoBack();
         }
 

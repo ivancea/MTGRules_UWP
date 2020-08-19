@@ -71,7 +71,7 @@
         <Button x:Name="backButton"
                 x:Uid="/About/backButton"
                 Grid.Row="3"
-                Click="onBackButtonClick"
+                Click="OnBackButtonClick"
                 HorizontalAlignment="Center"/>
 
     </Grid>

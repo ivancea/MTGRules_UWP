@@ -1,7 +1,7 @@
 # MTGRules_UWP
 MTGRules UWP Windows Store App
 
-*This project has been replaced by the one in https://github.com/ivancea/MTGRules, a multi-platform solution created with Xamarin.*
+**This project is discontinued and has been replaced by https://github.com/ivancea/MTGRules_Android/, an Android version.**
 
 The main objective of this application is to provide a history of **Magic: The Gathering** rule sets, and the ability to compare, search and navigate them.
 

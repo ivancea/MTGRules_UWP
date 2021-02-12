@@ -189,6 +189,11 @@ namespace MTGRules {
             new RulesSource("MagicCompRules%2020201120.txt",
                             new Uri("https://media.wizards.com/2020/downloads/MagicCompRules%2020201120.txt"),
                             new DateTime(2020, 11, 20),
+                            Encoding.GetEncoding("UTF-8")),
+
+            new RulesSource("MagicCompRules%2020210202.txt",
+                            new Uri("https://media.wizards.com/2021/downloads/MagicCompRules%2020210202.txt"),
+                            new DateTime(2021, 2, 2),
                             Encoding.GetEncoding("UTF-8"))
         };
 
